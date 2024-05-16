@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Spiel</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- Hauptcontainer für das gesamte Memory-Spiel -->
+    <div class="container">
+        <!-- Überschrift des Spiels -->
+        <h2>Memory Spiel</h2>
+        <!-- Anzeige der verstrichenen Zeit seit Spielbeginn -->
+        <div id="timer">Zeit: 0 Sekunden</div>
+        <!-- Bereich, in dem die Memory-Karten angezeigt werden -->
+        <div class="game"></div>
+        <!-- Button, um das Spiel neu zu starten -->
+        <button class="reset" onclick="resetGame();">Spiel zurücksetzen</button>
+    </div>
+
+    <!-- JavaScript-Code für die Spiellogik -->
+    <script>
+        // Variablen für die Zeitmessung
+        let startTime, timerInterval;
+
+        // Funktion, um die Zeitmessung zu starten
+        function startTimer() {
+            startTime = Date.now(); // Startzeit speichern
+            timerInterval = setInterval(updateTimer, 1000); // Timer jede Sekunde aktualisieren
+        }
+
+        // Funktion, um die Timer-Anzeige zu aktualisieren
+        function updateTimer() {
+            let elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Berechnen der verstrichenen Zeit in Sekunden
+            document.getElementById('timer').innerText = `Zeit: ${elapsedTime} Sekunden`; // Anzeigen der verstrichenen Zeit
+        }
+
+        // Funktion, um die Zeitmessung zu stoppen
+        function stopTimer() {
+            clearInterval(timerInterval); // Stoppen des Intervalls
+        }
+
+        // Funktion, um das Spiel zurückzusetzen
+        function resetGame() {
+            window.location.reload(); // Neuladen der Seite
+        }
+
+        // Array mit Emoji-Paaren für das Memory-Spiel
+        const emojis = ["😘","😘","😂","😂","❤️","❤️","☝️","☝️","😉","😉","🐏","🐏","🤒","🤒","💰","💰"];
+
+        // Funktion zum Initialisieren des Spiels
+        function initGame() {
+            // Mischen der Emojis
+            let shuf_emojis = emojis.sort(() => (Math.random() > .5) ? 1 : -1);
+            // Erstellen der Karten für jedes Emoji
+            for (let i = 0; i < emojis.length; i++) {
+                let box = document.createElement('div'); // Erstellen eines neuen Div-Elements
+                box.className = 'item'; // Zuweisen der Klasse 'item'
+                box.innerHTML = shuf_emojis[i]; // Setzen des Emoji-Inhalts
+
+                // Klick-Event für jede Karte
+                box.onclick = function () {
+                    this.classList.add('boxOpen'); // Hinzufügen der Klasse 'boxOpen' beim Klicken
+
+                    // Funktion, um zu prüfen, ob zwei Karten übereinstimmen
+                    setTimeout(function () {
+                        let openBoxes = document.querySelectorAll('.boxOpen'); // Sammeln aller geöffneten Karten
+                        if (openBoxes.length > 1) {
+                            if (openBoxes[0].innerHTML == openBoxes[1].innerHTML) { // Vergleich der Emojis
+                                openBoxes.forEach(box => {
+                                    box.classList.add('boxMatch'); // Hinzufügen der Klasse 'boxMatch' bei Übereinstimmung
+                                    box.classList.remove('boxOpen'); // Entfernen der Klasse 'boxOpen'
+                                });
+
+                                // Überprüfung, ob das Spiel gewonnen wurde
+                                if (document.querySelectorAll('.boxMatch').length == emojis.length) {
+                                    alert('Gewonnen!'); // Anzeigen einer Gewinnmeldung
+                                    stopTimer(); // Stopp der Zeitmessung
+                                }
+                            } else {
+                                // Schließen der Karten, wenn sie nicht übereinstimmen
+                                openBoxes.forEach(box => box.classList.remove('boxOpen'));
+                            }
+                        }
+                    }, 500); // 500ms Verzögerung vor der Überprüfung
+                };
+
+                document.querySelector('.game').appendChild(box); // Hinzufügen der Karte zum Spielbereich
+            }
+
+            startTimer(); // Starten der Zeitmessung
+        }
+
+        // Spiel starten, sobald die Seite geladen ist
+        window.onload = initGame;
+    </script>
+</body>
+</html>

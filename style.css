@@ -1,0 +1,124 @@
+/* Grundlegende Stil-Reset */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+/* Stil für den Haupt-Body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1c54a2;
+}
+
+/* Container für das Spiel */
+.container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    background: #338ed7;
+    padding: 40px 60px;
+}
+
+/* Stil für die Überschrift */
+h2{
+    font-size: 3em;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Reset-Button Stil */
+.reset{
+    padding: 15px 20px;
+    color: #3cb6d7;
+    background: #fff;
+    border: none;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Stil für den Reset-Button bei Fokus */
+.reset:focus{
+    color: #fff;
+    background: #267c65;
+}
+
+/* Spielbereich Stil */
+.game{
+    width: 430px;
+    height: 430px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+
+/* Stil für jede Karte (item) */
+.item{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    background: #fff;
+    transition: 0.3s; /* Übergangsdauer für das Drehen der Karte */
+    transform: rotateY(180deg);
+}
+
+/* Stil, wenn eine Karte geöffnet wird */
+.item.boxOpen{
+    transform: rotateY(0deg);
+}
+
+/* Stil für die Rückseite jeder Karte */
+.item::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #2e61c0;
+    transition: 0.3s;
+    transform: rotateY(0deg);
+    backface-visibility: hidden;
+}
+
+/* Stil für geöffnete und passende Karten */
+.boxOpen:after,
+.boxMatch:after {
+    transform: rotateY(180deg);
+}
+
+
+/* Stil für die Zeit-Anzeige */
+#timer {
+    font-size: 1.2em; 
+    color: #fff; 
+    background: #26447cc9; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+    letter-spacing: 0.08em; 
+    text-transform: uppercase; 
+    margin-bottom: 10px; 
+}
+
+.reset:hover {
+    background: #2a7bf3; 
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); 
+    transform: scale(1.05); 
+    transition: all 0.3s ease; 
+}
